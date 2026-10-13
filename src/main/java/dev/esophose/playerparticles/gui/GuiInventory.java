@@ -193,7 +193,14 @@ public abstract class GuiInventory {
     }
 
     public void close() {
-        PlayerParticles.getInstance().getScheduler().runTask(() -> this.pplayer.getPlayer().closeInventory());
+        Player player = this.pplayer.getPlayer();
+        if (player == null)
+            return;
+
+        PlayerParticles.getInstance().getScheduler().runTaskAtEntity(player, () -> {
+            if (player.isOnline())
+                player.closeInventory();
+        });
     }
 
 }
